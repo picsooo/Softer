@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><link rel="icon" href="img/softel-logo.png">
+<title>Tester GestCom — démo interactive · SOFTEL</title>
+</head><body>
+<div id="hdr"></div>
+<main id="app"><div class="wrap"><nav class="crumb"><a href="index.html">Accueil</a> / Démo interactive</nav>
+<div class="ph"><h1>Testez <span class="gc"><b>Gest</b><i>Com</i></span> dans votre navigateur.</h1><p class="lead">Une simulation fidèle du logiciel, avec des données fictives. Créez une facture, encaissez-la, réceptionnez une commande : tout se met à jour comme dans le vrai GestCom.</p></div>
+<div class="demo-l"><div class="demo-wrap"><div id="sim"></div><span class="postit d1" style="--r:-3deg">Tout est cliquable, allez-y !</span><span class="postit d2 pk" style="--r:5deg">Menu des modules</span></div>
+<aside class="miss"><div class="card"><h3>Votre mission</h3><p class="note" style="margin:4px 0 12px">4 actions pour découvrir l'essentiel.</p><div class="mbar"><i id="mb" style="width:0"></i></div><div id="mlist" style="margin-top:8px"></div>
+<div class="win" id="win"><b>Bravo, vous avez fait le tour !</b><p class="note" style="margin:6px 0 10px">Le vrai GestCom va encore plus loin : multi-dépôts, importations, production…</p><a class="btn sm" href="essai.html">Demander l'essai gratuit</a></div>
+<button class="btn ghost sm" id="rst" style="margin-top:12px;width:100%;justify-content:center">Réinitialiser la démo</button></div>
+<div class="card"><h3 style="font-size:17px">Envie d'une présentation ?</h3><p class="note" style="margin:6px 0 12px">Un consultant SOFTEL vous montre GestCom avec vos propres données.</p><a class="btn sm dk" href="essai.html?t=rdv">Prendre rendez-vous</a></div></aside></div></div></main>
+<div id="ftr"></div>
+<script src="data.js"></script><script src="app.js"></script><script src="sim.js"></script>
+<script>
+Shell.init();
+const T=[['facture','Créez une facture','Ventes → Nouvelle facture, ou transformez le devis','ventes'],['encaisse','Encaissez une facture','Ventes → bouton « Encaisser »','ventes'],['reception','Réceptionnez une commande fournisseur','Achats → « Réceptionner »','achats'],['paie','Consultez un bulletin de paie','Module Paie','paie']];
+let sim;
+function drawM(m){const n=T.filter(t=>m[t[0]]).length;document.getElementById('mb').style.width=(n/T.length*100)+'%';
+ document.getElementById('mlist').innerHTML=T.map(t=>`<div class="mt${m[t[0]]?' done':''}" data-g="${t[3]}"><span class="cb">${m[t[0]]?ic(I.check,14):''}</span><span>${t[1]}<small>${t[2]}</small></span></div>`).join('');
+ document.querySelectorAll('.mt').forEach(e=>e.onclick=()=>{sim.go(e.dataset.g);document.getElementById('sim').scrollIntoView({behavior:'smooth',block:'start'})});
+ document.getElementById('win').classList.toggle('on',n===T.length)}
+sim=mountSim(document.getElementById('sim'),{persist:true,notes:true,start:(location.hash.slice(1)||'dash'),onMission:drawM});
+drawM(sim.mission());
+document.getElementById('rst').onclick=()=>sim.reset();
+</script></body></html>

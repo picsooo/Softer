@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><link rel="icon" href="img/softel-logo.png">
+<title>Module GestCom · SOFTEL</title>
+</head><body>
+<div id="hdr"></div>
+<main id="app"></main>
+<div id="ftr"></div>
+<script src="data.js"></script><script src="app.js"></script><script src="sim.js"></script>
+<script>
+const m=modById(qp.get('m'))||MODULES[0];const scrMap={tresorerie:'treso'};const sid=scrMap[m.id]||m.id;
+document.title='Module '+m.n+' — GestCom · SOFTEL';
+const inc=PLANS.filter(p=>p.mods.includes(m.id)).map(p=>p.n);
+document.getElementById('app').innerHTML=`<div class="wrap" style="--c:${m.c}"><nav class="crumb"><a href="index.html">Accueil</a> / <a href="index.html#modules">Modules GestCom</a> / ${m.n}</nav>
+<div class="mnav2" style="margin-top:16px">${MODULES.map(x=>`<a class="${x.id===m.id?'on':''}" href="module.html?m=${x.id}">${x.n}</a>`).join('')}</div>
+<div class="mh"><div><span class="mi" style="--c:${m.c};width:56px;height:56px;border-radius:14px">${ic(m.ic,28)}</span>
+ <h1 style="margin-top:18px">Module ${m.n}</h1><p class="lead" style="margin:16px 0 24px">${m.d}</p>
+ <div class="acts" style="position:relative"><a class="btn" href="demo.html#${sid}" style="background:${m.c}">Tester ce module →</a><a class="btn ghost" href="tarifs.html">Voir les tarifs</a><span class="postit" style="--r:-4deg;top:60px;left:10px">Ouvre la démo directement sur ce module</span></div>
+ <div class="mkp" style="margin-top:70px">${m.k.map(k=>`<div><b>${k[1]}</b><small>${k[0]}</small></div>`).join('')}</div></div>
+ <div id="msim"></div></div>
+<section style="padding-top:0"><div class="sh2"><h2>Fonctionnalités</h2><p>Ce que le module ${m.n} fait pour vous, au quotidien.</p></div><div class="flist">${m.f.map(f=>`<div>${ic(I.check)}<span>${f}</span></div>`).join('')}</div></section>
+<section style="padding-top:0"><div class="card" style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center"><div><h3>Inclus dans ${inc.length?'les offres '+inc.join(', '):'toutes les offres en option'}</h3><p class="note" style="margin-top:6px">${inc.length===PLANS.length?'Présent dans toutes les offres GestCom.':'Disponible aussi en option sur les autres offres.'}</p></div><a class="btn dk" href="tarifs.html">Configurer mon offre</a></div></section>
+<section style="padding-top:0"><h2 style="margin-bottom:10px">Questions fréquentes</h2>
+<details class="faq"><summary>Le module ${m.n} fonctionne-t-il avec les autres modules ?</summary><p>Oui, tous les modules GestCom partagent la même base : une opération saisie dans un module est immédiatement visible dans les autres.</p></details>
+<details class="faq"><summary>Peut-on l'adapter à notre façon de travailler ?</summary><p>GestCom est paramétrable : documents, champs, droits des utilisateurs et impressions s'adaptent à votre activité.</p></details>
+<details class="faq"><summary>Combien de temps pour démarrer ?</summary><p>Après l'installation et le paramétrage, vos équipes sont formées sur site pour être autonomes rapidement.</p></details>
+<p style="margin-top:20px"><button class="btn ghost sm" onclick="window.print()">Imprimer la fiche du module</button></p></section>
+<section style="padding-top:0"><h2 style="margin-bottom:22px">Autres modules</h2><div class="mods">${MODULES.filter(x=>x.id!==m.id).slice(0,4).map(x=>`<a class="mod" href="module.html?m=${x.id}" style="--c:${x.c}"><span class="pls"></span><span class="mi" style="--c:${x.c}">${ic(x.ic)}</span><h3>${x.n}</h3><p>${x.s}</p><span class="go">Voir la fiche ${ic(I.arrow,16)}</span></a>`).join('')}</div></section></div>`;
+Shell.init();
+mountSim(document.getElementById('msim'),{compact:true,start:sid});
+</script></body></html>

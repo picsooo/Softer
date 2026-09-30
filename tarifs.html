@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><link rel="icon" href="img/softel-logo.png">
+<title>Tarifs GestCom — configurateur · SOFTEL</title>
+</head><body>
+<div id="hdr"></div>
+<main id="app"><div class="wrap"><nav class="crumb"><a href="index.html">Accueil</a> / Tarifs</nav>
+<div class="ph" style="position:relative"><h1>Des tarifs simples, adaptés à votre taille.</h1><p class="lead">Licence définitive ou abonnement annuel. Choisissez une offre, ajustez le nombre de postes et les modules : le prix se calcule en direct.</p>
+<span class="postit pk" style="--r:3deg;top:10px;right:0">Prix indicatifs : à remplacer par la grille SOFTEL</span></div>
+<div style="position:relative;display:inline-block"><div class="bill" id="bill"><button data-b="lic" class="on">Licence définitive</button><button data-b="ab">Abonnement annuel</button></div><span class="postit inl bl" style="--r:-4deg;margin-left:16px">Basculez ici</span></div>
+<div class="plans" id="plans"></div>
+<div class="cfg" id="cfgz"><div class="card"><h2 style="font-size:clamp(26px,3vw,38px)">Configurez votre offre</h2><p class="note" style="margin:6px 0 10px">Offre de base : <b id="cb"></b></p><div id="opts"></div></div>
+<aside class="card cfgsum" style="position:sticky"><h3>Votre estimation</h3><div id="sum" style="margin-top:10px"></div><a class="btn" id="req" href="essai.html" style="width:100%;justify-content:center;margin-top:16px">Demander ce devis →</a><a class="btn ghost" href="demo.html" style="width:100%;justify-content:center;margin-top:8px">Tester avant d'acheter</a><p class="note" style="margin-top:10px">Montants hors taxes, indicatifs, pour la présentation de la maquette.</p></aside></div>
+<section style="padding-bottom:40px"><h2 style="margin-bottom:22px">Comparer les offres</h2><div class="card" style="overflow-x:auto;padding:10px 18px"><table class="cmp" id="cmp"></table></div></section>
+<section style="padding-top:0"><h2 style="margin-bottom:10px">Questions fréquentes</h2>
+<details class="faq"><summary>Quelle différence entre licence et abonnement ?</summary><p>La licence définitive s'achète une fois et reste la vôtre ; l'abonnement annuel réduit l'investissement de départ et inclut les mises à jour pendant la période.</p></details>
+<details class="faq"><summary>Puis-je ajouter des postes ou des modules plus tard ?</summary><p>Oui. GestCom évolue avec votre entreprise : postes et modules s'ajoutent à tout moment.</p></details>
+<details class="faq"><summary>L'installation et la formation sont-elles incluses ?</summary><p>Elles sont proposées en option, dans vos locaux. Nos équipes paramètrent le logiciel selon votre activité et forment vos utilisateurs.</p></details>
+<details class="faq"><summary>Mes données sont-elles sécurisées ?</summary><p>Les accès sont gérés par utilisateur et par droits. Les sauvegardes sont paramétrées avec vous lors de l'installation.</p></details></section></div></main>
+<div id="ftr"></div>
+<script src="data.js"></script><script src="app.js"></script><script src="sim.js"></script>
+<script>
+Shell.init();
+let bill='lic',plan=PLANS.find(p=>p.id===qp.get('plan'))||PLANS[1],extraP=0,extraM=[],inst=true,form=true;
+function pr(p){return bill==='lic'?p.lic:p.ab}
+function drawPlans(){document.getElementById('plans').innerHTML=PLANS.map(p=>`<div class="plan${p.id===plan.id?' on':''}" data-p="${p.id}">${p.hl?'<span class="pop">Le plus choisi</span>':''}<div><h3>${p.n}</h3><p class="note">${p.for}</p></div><div class="pr">${DA(pr(p))}<small> ${bill==='lic'?'HT, une fois':'HT / an'}</small></div>
+ <ul>${MODULES.map(m=>`<li class="${p.mods.includes(m.id)?'':'no'}">${ic(p.mods.includes(m.id)?I.check:'M6 6l12 12M18 6L6 18',17)}${m.n}</li>`).join('')}<li>${ic(I.check,17)}${p.postes} poste${p.postes>1?'s':''} inclus</li></ul>
+ <button class="btn ${p.id===plan.id?'':'ghost'}" style="justify-content:center">${p.id===plan.id?'Offre sélectionnée ✓':'Choisir '+p.n}</button></div>`).join('');
+ document.querySelectorAll('.plan').forEach(e=>e.onclick=()=>{plan=PLANS.find(p=>p.id===e.dataset.p);extraM=extraM.filter(m=>!plan.mods.includes(m));draw();document.getElementById('cfgz').scrollIntoView({behavior:'smooth'})})}
+function drawOpts(){const add=MODULES.filter(m=>!plan.mods.includes(m.id));const u=bill==='lic'?'lic':'ab';
+ document.getElementById('cb').textContent=plan.n+' — '+plan.mods.length+' modules, '+plan.postes+' poste'+(plan.postes>1?'s':'');
+ document.getElementById('opts').innerHTML=`<div class="opt" style="display:block"><div style="display:flex;justify-content:space-between;font-weight:600"><span>Postes supplémentaires</span><b class="mono" id="pv">${extraP}</b></div><input class="rng" type="range" min="0" max="20" value="${extraP}" id="rp"><small class="note">${DA(ADDON.poste[u])} ${bill==='lic'?'par poste':'par poste et par an'}</small></div>
+ ${add.map(m=>`<div class="opt"><label><input type="checkbox" data-m="${m.id}"${extraM.includes(m.id)?' checked':''}><span>Module ${m.n}<small>${m.s}</small></span></label><b class="mono">+${DA(ADDON.module[u])}</b></div>`).join('')||'<p class="note" style="padding:14px 0">Tous les modules sont déjà inclus dans cette offre.</p>'}
+ <div class="opt"><label><input type="checkbox" id="oi"${inst?' checked':''}><span>Installation et paramétrage sur site<small>Dans vos locaux, selon votre activité</small></span></label><b class="mono">+${DA(ADDON.install)}</b></div>
+ <div class="opt"><label><input type="checkbox" id="of"${form?' checked':''}><span>Formation des utilisateurs<small>Une journée, sur site</small></span></label><b class="mono">+${DA(ADDON.formation)}</b></div>`;
+ document.getElementById('rp').oninput=e=>{extraP=+e.target.value;document.getElementById('pv').textContent=extraP;sum()};
+ document.querySelectorAll('[data-m]').forEach(c=>c.onchange=()=>{extraM=c.checked?[...extraM,c.dataset.m]:extraM.filter(x=>x!==c.dataset.m);sum()});
+ document.getElementById('oi').onchange=e=>{inst=e.target.checked;sum()};document.getElementById('of').onchange=e=>{form=e.target.checked;sum()}}
+function sum(){const u=bill==='lic'?'lic':'ab';const lines=[[`Offre ${plan.n}`,pr(plan)]];if(extraP)lines.push([`${extraP} poste${extraP>1?'s':''} supplémentaire${extraP>1?'s':''}`,extraP*ADDON.poste[u]]);extraM.forEach(m=>lines.push(['Module '+modById(m).n,ADDON.module[u]]));
+ const rec=lines.reduce((s,l)=>s+l[1],0);const one=(inst?ADDON.install:0)+(form?ADDON.formation:0);
+ document.getElementById('sum').innerHTML=lines.map(l=>`<div class="srow"><span>${l[0]}</span><b>${DA(l[1])}</b></div>`).join('')+(inst?`<div class="srow"><span>Installation</span><b>${DA(ADDON.install)}</b></div>`:'')+(form?`<div class="srow"><span>Formation</span><b>${DA(ADDON.formation)}</b></div>`:'')+
+ `<div class="srow t"><span>${bill==='lic'?'Total':'1re année'}</span><b>${DA(rec+one)}</b></div>${bill==='ab'?`<div class="srow"><span class="note">Années suivantes</span><b class="note">${DA(rec)} / an</b></div>`:''}<div class="srow"><span class="note">Postes au total</span><b class="note">${plan.postes+extraP}</b></div>`;
+ document.getElementById('req').href=`essai.html?t=devis&plan=${plan.id}&bill=${bill}&postes=${plan.postes+extraP}&mods=${extraM.join(',')}&total=${rec+one}`}
+function drawCmp(){document.getElementById('cmp').innerHTML=`<thead><tr><th></th>${PLANS.map(p=>`<th>${p.n}</th>`).join('')}</tr></thead><tbody>${MODULES.map(m=>`<tr><td>${m.n}</td>${PLANS.map(p=>p.mods.includes(m.id)?'<td class="yes">✓</td>':'<td class="nop">option</td>').join('')}</tr>`).join('')}
+ <tr><td>Postes inclus</td>${PLANS.map(p=>`<td class="mono">${p.postes}</td>`).join('')}</tr><tr><td>Multi-dossiers</td>${PLANS.map((p,i)=>i?'<td class="yes">✓</td>':'<td class="nop">—</td>').join('')}</tr><tr><td>Assistance téléphone et WhatsApp</td>${PLANS.map(()=>'<td class="yes">✓</td>').join('')}</tr><tr><td>${bill==='lic'?'Prix licence':'Prix abonnement / an'}</td>${PLANS.map(p=>`<td class="mono"><b>${DA(pr(p))}</b></td>`).join('')}</tr></tbody>`}
+function draw(){drawPlans();drawOpts();sum();drawCmp()}
+document.querySelectorAll('#bill button').forEach(b=>b.onclick=()=>{bill=b.dataset.b;document.querySelectorAll('#bill button').forEach(x=>x.classList.toggle('on',x===b));draw()});
+draw();</script></body></html>
