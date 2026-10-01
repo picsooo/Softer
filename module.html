@@ -5,7 +5,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css"><link rel="icon" href="img/softel-logo.png">
 <title>Module GestCom · SOFTEL</title>
-</head><body>
+<meta name="robots" content="noindex, nofollow"><!--wm-demo--></head><body>
 <div id="hdr"></div>
 <main id="app"></main>
 <div id="ftr"></div>
@@ -31,4 +31,5 @@ document.getElementById('app').innerHTML=`<div class="wrap" style="--c:${m.c}"><
 <section style="padding-top:0"><h2 style="margin-bottom:22px">Autres modules</h2><div class="mods">${MODULES.filter(x=>x.id!==m.id).slice(0,4).map(x=>`<a class="mod" href="module.html?m=${x.id}" style="--c:${x.c}"><span class="pls"></span><span class="mi" style="--c:${x.c}">${ic(x.ic)}</span><h3>${x.n}</h3><p>${x.s}</p><span class="go">Voir la fiche ${ic(I.arrow,16)}</span></a>`).join('')}</div></section></div>`;
 Shell.init();
 mountSim(document.getElementById('msim'),{compact:true,start:sid});
-</script></body></html>
+</script><div id="wm-demo" role="note" style="position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:rgba(10,14,30,.92);color:#fff;font:600 12px/1.3 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-align:center;padding:7px 12px calc(7px + env(safe-area-inset-bottom,0px));letter-spacing:.01em">Maquette de démonstration réalisée par <a href="https://webminds.dz" style="color:#ffcf5a;text-decoration:underline" target="_blank" rel="noopener">Webminds</a> · Proposition non officielle, aucun formulaire n'est enregistré</div>
+<script>(function(){function f(){var b=document.getElementById('wm-demo');if(!b)return;var h=b.offsetHeight;document.body.style.paddingBottom=(parseFloat(getComputedStyle(document.body).paddingBottom)||0)+h+'px';document.querySelectorAll('body *').forEach(function(e){if(e===b||b.contains(e))return;var s=getComputedStyle(e);if(s.position!=='fixed')return;var bt=parseFloat(s.bottom);if(!isNaN(bt)&&bt<120&&s.bottom!=='auto'&&e.offsetHeight<window.innerHeight*.6){e.style.bottom=(bt+h)+'px'}})}if(document.readyState==='complete')f();else addEventListener('load',f)})();</script><!--wm-demo--></body></html>

@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="style.css"><link rel="icon" href="img/softel-logo.png">
 <title>SOFTEL Solutions — GestCom, logiciel de gestion commerciale</title>
 <meta name="description" content="SOFTEL Solutions, éditeur algérien du logiciel de gestion commerciale GestCom : ventes, achats, stocks, trésorerie, importation, production et paie.">
-</head><body>
+<meta name="robots" content="noindex, nofollow"><!--wm-demo--></head><body>
 <div id="hdr"></div>
 <main id="app">
 <section class="hero"><div class="wrap hg">
@@ -51,4 +51,5 @@ document.getElementById('pp').innerHTML=PLANS.map(p=>`<a class="${p.hl?'hl':''}"
 document.getElementById('cinfo').innerHTML=[[I.phone,SF.fixe,'Standard',SF.fixeTel],[I.phone,SF.mob,'Commercial',SF.mobTel],[I.wa,SF.wa2,'WhatsApp',SF.wa],[I.mail,SF.email,'Email','mailto:'+SF.email],[I.pin,SF.addr,'Nos bureaux',SF.map]].map(c=>`<a class="cl" href="${c[3]}"${c[3].startsWith('http')?' target="_blank" rel="noopener"':''}>${ic(c[0])}<span><b>${c[1]}</b><small>${c[2]}</small></span></a>`).join('');
 document.getElementById('cf').onsubmit=e=>{e.preventDefault();e.target.innerHTML='<div class="full" style="padding:20px 0"><h3>Merci, nous vous rappelons rapidement.</h3><p class="note">(Simulation)</p></div>'};
 document.querySelector('h1+.lead')||0;
-</script></body></html>
+</script><div id="wm-demo" role="note" style="position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:rgba(10,14,30,.92);color:#fff;font:600 12px/1.3 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-align:center;padding:7px 12px calc(7px + env(safe-area-inset-bottom,0px));letter-spacing:.01em">Maquette de démonstration réalisée par <a href="https://webminds.dz" style="color:#ffcf5a;text-decoration:underline" target="_blank" rel="noopener">Webminds</a> · Proposition non officielle, aucun formulaire n'est enregistré</div>
+<script>(function(){function f(){var b=document.getElementById('wm-demo');if(!b)return;var h=b.offsetHeight;document.body.style.paddingBottom=(parseFloat(getComputedStyle(document.body).paddingBottom)||0)+h+'px';document.querySelectorAll('body *').forEach(function(e){if(e===b||b.contains(e))return;var s=getComputedStyle(e);if(s.position!=='fixed')return;var bt=parseFloat(s.bottom);if(!isNaN(bt)&&bt<120&&s.bottom!=='auto'&&e.offsetHeight<window.innerHeight*.6){e.style.bottom=(bt+h)+'px'}})}if(document.readyState==='complete')f();else addEventListener('load',f)})();</script><!--wm-demo--></body></html>
